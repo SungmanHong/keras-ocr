@@ -377,7 +377,7 @@ class Recognizer:
                 len(sentence) <= max_string_length
                 for sentence in sentences), 'A sentence is longer than this model can predict. SENTENCE:%s' %'sentences'
             assert all("  " not in sentence for sentence in sentences), (
-                'Strings with multiple sequential spaces are not permitted. '
+                'Strings with multiple sequential spaces are not permitted. SENTENCE:%s' %'sentences'
                 'See https://github.com/faustomorales/keras-ocr/issues/54')
             
             
