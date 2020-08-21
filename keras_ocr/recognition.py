@@ -371,13 +371,13 @@ class Recognizer:
             
             
             assert all(c in self.alphabet
-                for c in ''.join(sentences)), 'Found illegal characters in sentence. SENTENCE:%s' %'sentences'
-            assert all(sentences), 'Found a zero length sentence. SENTENCE:%s' %'sentences'
+                for c in ''.join(sentences)), 'Found illegal characters in sentence. SENTENCE:%s' %sentences
+            assert all(sentences), 'Found a zero length sentence. SENTENCE:%s' %sentences
             assert all(
                 len(sentence) <= max_string_length
-                for sentence in sentences), 'A sentence is longer than this model can predict. SENTENCE:%s' %'sentences'
+                for sentence in sentences), 'A sentence is longer than this model can predict. SENTENCE:%s' %sentences
             assert all("  " not in sentence for sentence in sentences), (
-                'Strings with multiple sequential spaces are not permitted. SENTENCE:%s' %'sentences'
+                'Strings with multiple sequential spaces are not permitted. SENTENCE:%s' %sentences
                 'See https://github.com/faustomorales/keras-ocr/issues/54')
             
             
