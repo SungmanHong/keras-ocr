@@ -371,7 +371,7 @@ class Recognizer:
             
             
             assert all(c in self.alphabet
-                for c in ''.join(sentences)), 'Found illegal characters in sentence. SENTENCE:%s' %sentences
+                for c in ''.join(sentences)), 'Found illegal characters in sentence. SENTENCE:%s, ALPHABET:%s' %(sentences,self.alphabet)
             assert all(sentences), 'Found a zero length sentence. SENTENCE:%s' %sentences
             assert all(
                 len(sentence) <= max_string_length
