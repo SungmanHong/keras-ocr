@@ -182,8 +182,7 @@ def focal_ctc_lambda_func(args):
         focal_ctc_loss = alpha*tf.pow((1-p),gamma)*ctc_loss
         return focal_ctc_loss
     
-def build_model(alphabet=None,
-                height,
+def build_model(height,
                 width,
                 color,
                 filters,
@@ -191,6 +190,7 @@ def build_model(alphabet=None,
                 dropout,
                 rnn_steps_to_discard,
                 pool_size,
+                alphabet=DEFAULT_ALPHABET,
                 stn=True):
     """Build a Keras CRNN model for character recognition.
 
