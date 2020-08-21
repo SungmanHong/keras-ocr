@@ -309,7 +309,7 @@ class Recognizer:
         include_top: Whether to include the final classification layer in the model (set
             to False to use a custom alphabet).
     """
-    def __init__(self, alphabet=None, weights='kurapan', build_params=None):
+    def __init__(self, alphabet=DEFAULT_ALPHABET, weights='kurapan', build_params=None):
         assert alphabet or weights, 'At least one of alphabet or weights must be provided.'
         if weights is not None:
             build_params = build_params or PRETRAINED_WEIGHTS[weights]['build_params']
