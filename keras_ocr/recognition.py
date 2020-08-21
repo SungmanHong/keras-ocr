@@ -450,7 +450,7 @@ class Recognizer:
     def compile(self, *args, **kwargs):
         """Compile the training model."""
         if 'optimizer' not in kwargs:
-            kwargs['optimizer'] = 'RMSprop'
+            kwargs['optimizer'] = 'Adam'
         if 'loss' not in kwargs:
             kwargs['loss'] = lambda _, y_pred: y_pred
         self.training_model.compile(*args, **kwargs)
