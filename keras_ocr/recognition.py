@@ -175,7 +175,13 @@ def CTCDecoder():
 
     return tf.keras.layers.Lambda(decoder, name='decode')
 
-
+def focal_ctc_lambda_func(args):
+        labels, y_pred, input_length, label_length = args
+        ctc_loss = keras.backend.ctc_batch_cost(labels, y_pred, input_length, label_length)
+        p = tf.exp(-ctc_loss)
+        focal_ctc_loss = alpha*tf.pow((1-p),gamma)*ctc_loss
+        return focal_ctc_loss
+    
 def build_model(alphabet=DEFAULT_ALPHABET,
                 height,
                 width,
@@ -290,9 +296,14 @@ def build_model(alphabet=DEFAULT_ALPHABET,
     labels = keras.layers.Input(name='labels', shape=[model.output_shape[1]], dtype='float32')
     label_length = keras.layers.Input(shape=[1])
     input_length = keras.layers.Input(shape=[1])
-    loss = keras.layers.Lambda(lambda inputs: keras.backend.ctc_batch_cost(
+    loss = keras.layers.Lambda(lambda inputs: focal_ctc_lambda_func(
         y_true=inputs[0], y_pred=inputs[1], input_length=inputs[2], label_length=inputs[3]))(
             [labels, model.output, input_length, label_length])
+    
+    
+
+        
+        
     training_model = keras.models.Model(inputs=[model.input, labels, input_length, label_length],
                                         outputs=loss)
     return backbone, model, training_model, prediction_model
