@@ -176,7 +176,7 @@ def CTCDecoder():
     return tf.keras.layers.Lambda(decoder, name='decode')
 
 
-def build_model(alphabet,
+def build_model(alphabet=DEFAULT_ALPHABET,
                 height,
                 width,
                 color,
