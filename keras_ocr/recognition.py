@@ -296,6 +296,7 @@ def build_model(height,
             [labels, model.output, input_length, label_length])
     p = tf.exp(-loss_a)
     loss = 0.75*tf.pow((1-p),0.5)*loss_a
+    loss = loss_a
         
         
     training_model = keras.models.Model(inputs=[model.input, labels, input_length, label_length],
