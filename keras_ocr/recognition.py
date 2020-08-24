@@ -21,8 +21,7 @@ DEFAULT_BUILD_PARAMS = {
     'stn': True,
 }
 
-DEFAULT_ALPHABET = string.digits + string.ascii_letters + '!\"#$%&()*+,-./:;?@[\\]^_`{|}~ '+'가각간갇갈감갑값갓강갖같갚갛개객걀걔거걱건걷걸검겁것겉게겨격겪견결겹경곁계고곡곤곧골곰곱곳공과관광괜괴굉교구국군굳굴굵굶굽궁권귀귓규균귤그극근글긁금급긋긍기긴길김깅깊까깍깎깐깔깜깝깡깥깨꺼꺾껌껍껏껑께껴꼬꼭꼴꼼꼽꽂꽃꽉꽤꾸꾼꿀꿈뀌끄끈끊끌끓끔끗끝끼낌나낙낚난날낡남납낫낭낮낯낱낳내냄냇냉냐냥너넉넌널넓넘넣네넥넷녀녁년념녕노녹논놀놈농높놓놔뇌뇨누눈눕뉘뉴늄느늑는늘늙능늦늬니닐님다닥닦단닫달닭닮담답닷당닿대댁댐댓더덕던덜덟덤덥덧덩덮데델도독돈돌돕돗동돼되된두둑둘둠둡둥뒤뒷드득든듣들듬듭듯등디딩딪따딱딴딸땀땅때땜떠떡떤떨떻떼또똑뚜뚫뚱뛰뜨뜩뜯뜰뜻띄라락란람랍랑랗래랜램랫략량러럭런럴럼럽럿렁렇레렉렌려력련렬렵령례로록론롬롭롯료루룩룹룻뤄류륙률륭르른름릇릎리릭린림립릿링마막만많말맑맘맙맛망맞맡맣매맥맨맵맺머먹먼멀멈멋멍멎메멘멩며면멸명몇모목몬몰몸몹못몽묘무묵묶문묻물뭄뭇뭐뭘뭣므미민믿밀밉밌밍및밑바박밖반받발밝밟밤밥방밭배백뱀뱃뱉버번벌범법벗베벤벨벼벽변별볍병볕보복볶본볼봄봇봉뵈뵙부북분불붉붐붓붕붙뷰브븐블비빌빔빗빚빛빠빡빨빵빼뺏뺨뻐뻔뻗뼈뼉뽑뿌뿐쁘쁨사삭산살삶삼삿상새색샌생샤서석섞선설섬섭섯성세섹센셈셋셔션소속손솔솜솟송솥쇄쇠쇼수숙순숟술숨숫숭숲쉬쉰쉽슈스슨슬슭슴습슷승시식신싣실싫심십싯싱싶싸싹싼쌀쌍쌓써썩썰썹쎄쏘쏟쏠쑤쓰쓴쓸씀씌씨씩씬씹씻아악안앉않알앎앓암압앗앙앞애액앨야약얀얄얇양얕얗얘어억언얹얻얼엄업없엇엉엊엌엎에엑엔엘여역연열엷염엽엿영옆예옛오옥온올옮옳옷옹와완왕왜왠외왼요욕용우욱운울움웃웅워원월웨웬위윗유육율으윽은을음응의이익인일읽잃임입잇있잊잎자작잔잖잘잠잡잣장잦재쟁쟤저적전절젊점접젓정젖제젠젯져조족존졸좀좁종좋좌죄주죽준줄줌줍중쥐즈즉즌즐즘증지직진질짐집짓징짙짚짜짝짧째쨌쩌쩍쩐쩔쩜쪽쫓쭈쭉찌찍찢차착찬찮찰참찻창찾채책챔챙처척천철첩첫청체쳐초촉촌촛총촬최추축춘출춤춥춧충취츠측츰층치칙친칠침칫칭카칸칼캄캐캠커컨컬컴컵컷케켓켜코콘콜콤콩쾌쿄쿠퀴크큰클큼키킬타탁탄탈탑탓탕태택탤터턱턴털텅테텍텐텔템토톡톤톨톱통퇴투툴툼퉁튀튜트특튼튿틀틈티틱팀팅파팎판팔팝패팩팬퍼퍽페펜펴편펼평폐포폭폰표푸푹풀품풍퓨프플픔피픽필핏핑하학한할함합항해핵핸햄햇행향허헌험헤헬혀현혈혐협형혜호혹혼홀홈홉홍화확환활황회획횟횡효후훈훌훔훨휘휴흉흐흑흔흘흙흡흥흩희흰히힘'
-#DEFAULT_ALPHABET = '안녕하세요!가각간 '
+DEFAULT_ALPHABET = string.digits + string.ascii_lowercase
 
 PRETRAINED_WEIGHTS = {
     'kurapan': {
@@ -176,8 +175,8 @@ def CTCDecoder():
     return tf.keras.layers.Lambda(decoder, name='decode')
 
 
-    
-def build_model(height,
+def build_model(alphabet,
+                height,
                 width,
                 color,
                 filters,
@@ -185,10 +184,8 @@ def build_model(height,
                 dropout,
                 rnn_steps_to_discard,
                 pool_size,
-                alphabet=DEFAULT_ALPHABET,
                 stn=True):
     """Build a Keras CRNN model for character recognition.
-
     Args:
         height: The height of cropped images
         width: The width of cropped images
@@ -291,14 +288,9 @@ def build_model(height,
     labels = keras.layers.Input(name='labels', shape=[model.output_shape[1]], dtype='float32')
     label_length = keras.layers.Input(shape=[1])
     input_length = keras.layers.Input(shape=[1])
-    loss_a = keras.layers.Lambda(lambda inputs: keras.backend.ctc_batch_cost(
+    loss = keras.layers.Lambda(lambda inputs: keras.backend.ctc_batch_cost(
         y_true=inputs[0], y_pred=inputs[1], input_length=inputs[2], label_length=inputs[3]))(
             [labels, model.output, input_length, label_length])
-    p = tf.exp(-loss_a)
-    loss = 0.75*tf.pow((1-p),0.5)*loss_a
-    loss = loss_a
-        
-        
     training_model = keras.models.Model(inputs=[model.input, labels, input_length, label_length],
                                         outputs=loss)
     return backbone, model, training_model, prediction_model
@@ -306,7 +298,6 @@ def build_model(height,
 
 class Recognizer:
     """A text detector using the CRNN architecture.
-
     Args:
         alphabet: The alphabet the model should recognize.
         build_params: A dictionary of build parameters for the model.
@@ -315,7 +306,7 @@ class Recognizer:
         include_top: Whether to include the final classification layer in the model (set
             to False to use a custom alphabet).
     """
-    def __init__(self, alphabet=DEFAULT_ALPHABET, weights='kurapan', build_params=None):
+    def __init__(self, alphabet=None, weights='kurapan', build_params=None):
         assert alphabet or weights, 'At least one of alphabet or weights must be provided.'
         if weights is not None:
             build_params = build_params or PRETRAINED_WEIGHTS[weights]['build_params']
@@ -327,6 +318,20 @@ class Recognizer:
         self.blank_label_idx = len(alphabet)
         self.backbone, self.model, self.training_model, self.prediction_model = build_model(
             alphabet=alphabet, **build_params)
+        if weights is not None:
+            weights_dict = PRETRAINED_WEIGHTS[weights]
+            if alphabet == weights_dict['alphabet']:
+                self.model.load_weights(
+                    tools.download_and_verify(url=weights_dict['weights']['top']['url'],
+                                              filename=weights_dict['weights']['top']['filename'],
+                                              sha256=weights_dict['weights']['top']['sha256']))
+            else:
+                print('Provided alphabet does not match pretrained alphabet. '
+                      'Using backbone weights only.')
+                self.backbone.load_weights(
+                    tools.download_and_verify(url=weights_dict['weights']['notop']['url'],
+                                              filename=weights_dict['weights']['notop']['filename'],
+                                              sha256=weights_dict['weights']['notop']['sha256']))
 
     def get_batch_generator(self, image_generator, batch_size=8, lowercase=False):
         """
@@ -335,7 +340,6 @@ class Recognizer:
         line of text and sentence is a string representing the contents of
         the image. If a sample weight is desired, it can be provided as a third
         entry in the tuple, making each tuple an (image, sentence, weight) tuple.
-
         Args:
             image_generator: An image / sentence tuple generator. The images should
                 be in color even if the OCR is setup to handle grayscale as they
@@ -360,20 +364,15 @@ class Recognizer:
             sentences = [sample[1].strip() for sample in batch]
             if lowercase:
                 sentences = [sentence.lower() for sentence in sentences]
-            
-            
             assert all(c in self.alphabet
-                for c in ''.join(sentences)), 'Found illegal characters in sentence.{0},{1}'.format(self.alphabet, sentences)
-            assert all(sentences), 'Found a zero length sentence. SENTENCE:%s' %sentences
+                       for c in ''.join(sentences)), 'Found illegal characters in sentence.'
+            assert all(sentences), 'Found a zero length sentence.'
             assert all(
                 len(sentence) <= max_string_length
-                for sentence in sentences), 'A sentence is longer than this model can predict. SENTENCE:%s' %sentences
+                for sentence in sentences), 'A sentence is longer than this model can predict.'
             assert all("  " not in sentence for sentence in sentences), (
                 'Strings with multiple sequential spaces are not permitted. '
                 'See https://github.com/faustomorales/keras-ocr/issues/54')
-
-            
-            
             label_length = np.array([len(sentence) for sentence in sentences])[:, np.newaxis]
             labels = np.array([[self.alphabet.index(c)
                                 for c in sentence] + [-1] * (max_string_length - len(sentence))
@@ -387,7 +386,6 @@ class Recognizer:
 
     def recognize(self, image):
         """Recognize text from a single image.
-
         Args:
             image: A pre-cropped image containing characters
         """
@@ -406,7 +404,6 @@ class Recognizer:
 
     def recognize_from_boxes(self, images, box_groups, **kwargs) -> typing.List[str]:
         """Recognize text from images using lists of bounding boxes.
-
         Args:
             images: A list of input images, supplied as numpy arrays with shape
                 (H, W, 3).
@@ -443,7 +440,8 @@ class Recognizer:
     def compile(self, *args, **kwargs):
         """Compile the training model."""
         if 'optimizer' not in kwargs:
-            kwargs['optimizer'] = 'Adam'
+            kwargs['optimizer'] = 'RMSprop'
         if 'loss' not in kwargs:
             kwargs['loss'] = lambda _, y_pred: y_pred
         self.training_model.compile(*args, **kwargs)
+
