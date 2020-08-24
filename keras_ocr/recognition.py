@@ -21,7 +21,7 @@ DEFAULT_BUILD_PARAMS = {
     'stn': True,
 }
 
-DEFAULT_ALPHABET = string.digits + string.ascii_lowercase
+DEFAULT_ALPHABET = string.digits
 
 PRETRAINED_WEIGHTS = {
     'kurapan': {
